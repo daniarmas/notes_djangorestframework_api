@@ -7,6 +7,9 @@ import datetime
 class Label(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False)
 
+    class Meta:
+        db_table = 'label'
+
     def __str__(self):
         return self.title
 
@@ -21,6 +24,8 @@ class Note(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False)
     message = models.TextField(blank=True, null=True)
     labels = models.ManyToManyField(Label)
+    owner = models.ForeignKey(
+        'auth.User', related_name='note', on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True)
     delete_time = models.DateTimeField(blank=True, null=True, editable=False)
     objects = SoftDeleteManager()
@@ -35,6 +40,7 @@ class Note(models.Model):
         self.save()
 
     class Meta:
+        db_table = 'note'
         ordering = ['create_time']
 
     def __str__(self):
