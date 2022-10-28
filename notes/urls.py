@@ -17,8 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
 from notes.notes import models, views
-from notes.notes.views import label_detail, label_list
+from notes.notes.views import label_detail
 
 admin.site.register(models.Label)
 admin.site.register(models.Note)
@@ -29,8 +30,12 @@ router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('labels/', views.label_list),
+    path('labels/', views.LabelListCreate.as_view()),
     path('labels/<int:pk>/', views.label_detail),
+    path('notes/', views.NoteList.as_view()),
+    path('notes/<int:pk>/', views.NoteDetail.as_view()),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
+
+# urlpatterns = format_suffix_patterns(urlpatterns)
