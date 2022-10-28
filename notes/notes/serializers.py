@@ -4,12 +4,6 @@ from rest_framework import serializers
 from notes.notes.models import Label, Note
 
 
-# class UserSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ['url', 'username', 'email', 'groups', 'notes']
-
-
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
@@ -56,8 +50,7 @@ class NoteSerializer(serializers.Serializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    notes = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Note.objects.all())
+    notes = NoteSerializer(many=True)
 
     class Meta:
         model = User
