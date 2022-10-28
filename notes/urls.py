@@ -21,20 +21,22 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from notes.notes import models, views
 from notes.notes.views import label_detail
 
-admin.site.register(models.Label)
-admin.site.register(models.Note)
+# admin.site.register(models.Label)
+# admin.site.register(models.Note)
 
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
+# router = routers.DefaultRouter()
+# router.register(r'users', views.UserViewSet)
+# router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    # path('', include(router.urls)),
     path('labels/', views.LabelListCreate.as_view()),
     path('labels/<int:pk>/', views.label_detail),
     path('notes/', views.NoteList.as_view()),
     path('notes/<int:pk>/', views.NoteDetail.as_view()),
     path('admin/', admin.site.urls),
+    path('users/', views.UserList.as_view()),
+    path('users/<int:pk>/', views.UserDetail.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 

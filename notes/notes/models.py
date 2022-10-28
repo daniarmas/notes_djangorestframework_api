@@ -25,7 +25,7 @@ class Note(models.Model):
     message = models.TextField(blank=True, null=True)
     labels = models.ManyToManyField(Label)
     owner = models.ForeignKey(
-        'auth.User', related_name='note', on_delete=models.CASCADE)
+        'auth.User', related_name='notes', on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True)
     delete_time = models.DateTimeField(blank=True, null=True, editable=False)
     objects = SoftDeleteManager()
