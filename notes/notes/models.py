@@ -4,8 +4,11 @@ import datetime
 # Create your models here.
 
 
-class GroupNote(models.Model):
+class Label(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False)
+
+    def __str__(self):
+        return self.title
 
 
 class SoftDeleteManager(models.Manager):
@@ -17,8 +20,7 @@ class SoftDeleteManager(models.Manager):
 class Note(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False)
     message = models.TextField(blank=True, null=True)
-    group_node_fk = models.ForeignKey(
-        GroupNote, on_delete=models.CASCADE, blank=True, null=True)
+    labels = models.ManyToManyField(Label)
     create_time = models.DateTimeField(auto_now_add=True)
     delete_time = models.DateTimeField(blank=True, null=True, editable=False)
     objects = SoftDeleteManager()
@@ -34,3 +36,6 @@ class Note(models.Model):
 
     class Meta:
         ordering = ['create_time']
+
+    def __str__(self):
+        return self.title

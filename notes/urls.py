@@ -18,8 +18,9 @@ from django.urls import path
 from django.urls import include, path
 from rest_framework import routers
 from notes.notes import models, views
+from notes.notes.views import label_detail, label_list
 
-admin.site.register(models.GroupNote)
+admin.site.register(models.Label)
 admin.site.register(models.Note)
 
 router = routers.DefaultRouter()
@@ -28,6 +29,8 @@ router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('labels/', views.label_list),
+    path('labels/<int:pk>/', views.label_detail),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
