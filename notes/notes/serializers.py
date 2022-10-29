@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-
 from notes.notes.models import Label, Note
 
 
@@ -21,7 +20,7 @@ class NoteSerializer(serializers.Serializer):
     title = serializers.CharField(
         required=False, allow_blank=False, max_length=100)
     message = serializers.CharField(allow_blank=True, allow_null=True)
-    owner = serializers.ReadOnlyField(source='owner.username')
+    owner = UserSerializer()
     create_time = serializers.DateTimeField(required=False)
     delete_time = serializers.DateTimeField(required=False, allow_null=True)
 
@@ -29,7 +28,7 @@ class NoteSerializer(serializers.Serializer):
         """
         Create and return a new `Note` instance, given the validated data.
         """
-        return Group.objects.create(**validated_data)
+        return Note.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         """
@@ -45,7 +44,7 @@ class NoteSerializer(serializers.Serializer):
         return instance
 
     class Meta:
-        model = Label
+        model = Note
         fields = ['id', 'title']
 
 

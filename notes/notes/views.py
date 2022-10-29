@@ -1,16 +1,13 @@
-from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import status
-from notes.notes import serializers
 from rest_framework import generics
-from notes.notes.serializers import NoteSerializer, UserSerializer, GroupSerializer
-from django.http import Http404, HttpResponse, JsonResponse
+from notes.notes.serializers.note_serializer import NoteSerializer
+from notes.notes.serializers.user_serializer import UserSerializer
+from django.http import Http404
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
 from notes.notes.models import Label, Note
 from notes.notes.serializers import LabelSerializer
 
@@ -43,6 +40,9 @@ class NoteList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class NoteDetail(APIView):

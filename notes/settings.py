@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'auditlog',
     'django_cleanup.apps.CleanupConfig',
+    'drf_yasg',
     'notes',
 ]
 
