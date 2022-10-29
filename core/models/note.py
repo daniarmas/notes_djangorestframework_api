@@ -1,17 +1,5 @@
 from django.db import models
-import datetime
-
-# Create your models here.
-
-
-class Label(models.Model):
-    title = models.CharField(max_length=100, blank=False, null=False)
-
-    class Meta:
-        db_table = 'label'
-
-    def __str__(self):
-        return self.title
+from django.utils import timezone
 
 
 class SoftDeleteManager(models.Manager):
@@ -23,16 +11,15 @@ class SoftDeleteManager(models.Manager):
 class Note(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False)
     message = models.TextField(blank=True, null=True)
-    labels = models.ManyToManyField(Label)
-    owner = models.ForeignKey(
-        'auth.User', related_name='notes', on_delete=models.CASCADE)
+    labels = models.ManyToManyField("core.Label")
+    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True)
     delete_time = models.DateTimeField(blank=True, null=True, editable=False)
     objects = SoftDeleteManager()
     all_objects = models.Manager()
 
     def soft_delete(self):
-        self.delete_time = datetime.timezone.now()
+        self.delete_time = timezone.now()
         self.save()
 
     def restore(self):
