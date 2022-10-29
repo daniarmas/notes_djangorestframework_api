@@ -1,18 +1,7 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from notes.notes.models import Label, Note
 
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ['url', 'name']
-
-
-class LabelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Label
-        fields = ['id', 'title']
+from core.api.serializers.user import UserSerializer
+from core.models import Note
 
 
 class NoteSerializer(serializers.Serializer):
@@ -46,11 +35,3 @@ class NoteSerializer(serializers.Serializer):
     class Meta:
         model = Note
         fields = ['id', 'title']
-
-
-class UserSerializer(serializers.ModelSerializer):
-    notes = NoteSerializer(many=True)
-
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'notes']
